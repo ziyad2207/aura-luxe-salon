@@ -29,15 +29,18 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: files/aura-luxe-fixed/package-lock.json
+          cache-dependency-path: files/aura-luxe-bolt/package-lock.json
 
       - name: Install dependencies
-        working-directory: files/aura-luxe-fixed
+        working-directory: files/aura-luxe-bolt
         run: npm ci
 
       - name: Build website
-        working-directory: files/aura-luxe-fixed
+        working-directory: files/aura-luxe-bolt
         run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -45,7 +48,7 @@ jobs:
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:
-          path: files/aura-luxe-fixed/dist
+          path: files/aura-luxe-bolt/dist
 
       - name: Deploy website
         id: deployment
